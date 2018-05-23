@@ -18,13 +18,17 @@ class Node:
     def removable_edges(self, with_parent):
         # Take into account if this node has a parent
         even = (self.even + with_parent) % 2
+        if even == 1:
+            # Cant subdivide in trees with even nodes count
+            return 0
 
         ret = 0
         for n in self.child:
-            if n.even == even:
+            if n.even == 0:
                 # The number of nodes that the tree with this node as root has and 
-                # the tree with n as root has are both even or both odd.
-                # Thus the edge from this node to n can be removed keeping de "evennes".
+                # the tree with n as root has are both even.
+                # Thus the edge from this node to n can be removed keeping both with
+                # an even number of nodes.
                 # +1 for this edge and take into account the removable edges of
                 # the subtree with n as root.
                 ret += 1 + n.removable_edges(with_parent=0)
